@@ -22,7 +22,7 @@ public class DuiGouView extends View {
     //保存当前按钮的状态，默认为false代表是灰色的时候，true代表被点击过了为激活状态
     private boolean status=false;
     //默认的颜色
-    private final int DEFAULT_COLOR= Color.parseColor("#FF860000");
+    private final int DEFAULT_COLOR= Color.YELLOW;
     //默认的半径（px）
     private final float DEFAULT_RADIUS=256;
 
@@ -131,7 +131,7 @@ public class DuiGouView extends View {
         //画对勾
         if (!status)
             drawDuiGou(canvas,points);
-
+        //canvas.drawArc(getLeft(),getTop(),getRight(),getBottom(),0,degree,false,ringPaint);
         canvas.drawArc(4,4,getMeasuredWidth()-4,getMeasuredHeight()-4,0,degree,false,ringPaint);
 
     }
@@ -152,7 +152,7 @@ public class DuiGouView extends View {
     /**
      * 属性动画，完成画圈和环的动画
      */
-    synchronized private void addAnimator(){
+    private void addAnimator(){
         AnimatorSet set=new AnimatorSet();
         ObjectAnimator animator=ObjectAnimator.ofInt(this,"degree",0,360);
         ObjectAnimator a =ObjectAnimator.ofFloat(this,"radiusWhite",radiusWhite,0.0f);
@@ -187,7 +187,7 @@ public class DuiGouView extends View {
     /**
      * 添加缩放动画
      */
-    synchronized private void addScaleAni(){
+    private void addScaleAni(){
         setStatusToDead();
         ScaleAnimation scaleAnimation=new ScaleAnimation(1,1.2f,1,1.2f,getMeasuredWidth()/2,getMeasuredHeight()/2);
         scaleAnimation.setDuration(350);
