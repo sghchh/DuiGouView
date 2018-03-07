@@ -52,6 +52,41 @@ dependencies {
 ### 3. 实现过程中遇到的问题  
 #### 3.1 画圆环  
 
-调用**canvas.drawArc(getLeft(),getTop(),getRight(),getBottom(),0,degree,false,ringPaint)**搭配属性动画没有实现画圆环的效果。
+调用**canvas.drawArc(getLeft(),getTop(),getRight(),getBottom(),0,degree,false,ringPaint)**搭配属性动画没有实现画圆环的效果。  
+原因分析：  
+对drawArc的前四个参数理解错误：前四个参数的意思是一个矩形区域：  
+![image text](http://dl.iteye.com/upload/attachment/356328/c8365f29-5964-35d4-9a0b-e3f360218417.jpg)    
+
+分别对应了ABCD的坐标。  
+所以正确的调用方式是这样的：canvas.drawArc(4,4,getMeasuredWidth()-4,getMeasuredHeight()-4,0,degree,false,ringPaint)  
+
+#### 3.2 两种动画先后执行  
+前两个动画都是属性动画，我们可以通过**AnimatorSet**来规划他们的执行顺序，然而第三个View动画必须得是执行到他们的的后面，这时候该怎么办呢？  
+可以为**AnimatorSet添加动画监听**：  
+
+```
+//增加动画监听，在属性动画进行完后进行View动画
+        set.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                addScaleAni();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+```
 
 
